@@ -18,7 +18,6 @@ package net.unknowndomain.alea.systems.shadowrun5;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
-import net.unknowndomain.alea.AleaListener;
 import net.unknowndomain.alea.command.HelpWrapper;
 import net.unknowndomain.alea.systems.RpgSystemCommand;
 import net.unknowndomain.alea.systems.RpgSystemDescriptor;
@@ -120,7 +119,7 @@ public class Shadowrun5Command extends RpgSystemCommand
             String params = prefixMatcher.group(CMD_PARAMS);
             if (params == null || params.isEmpty())
             {
-                return HelpWrapper.printHelp(AleaListener.PREFIX + " " + prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
+                return HelpWrapper.printHelp(prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
             }
             try
             {
@@ -128,7 +127,7 @@ public class Shadowrun5Command extends RpgSystemCommand
                 CommandLine cmd = parser.parse(CMD_OPTIONS, params.split(" "));
                 if (cmd.hasOption(CMD_HELP))
                 {
-                    return HelpWrapper.printHelp(AleaListener.PREFIX + " " + prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
+                    return HelpWrapper.printHelp(prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
                 }
                 
                 Set<Shadowrun5Roll.Modifiers> mods = new HashSet<>();
@@ -160,7 +159,7 @@ public class Shadowrun5Command extends RpgSystemCommand
             } 
             catch (ParseException | NumberFormatException ex)
             {
-                retVal = HelpWrapper.printHelp(AleaListener.PREFIX + " " + prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
+                retVal = HelpWrapper.printHelp(prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
             }
         }
         return retVal;
