@@ -30,6 +30,8 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.javacord.api.entity.message.MessageBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -37,6 +39,7 @@ import org.javacord.api.entity.message.MessageBuilder;
  */
 public class Shadowrun5Command extends RpgSystemCommand
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Shadowrun5Command.class);
     private static final RpgSystemDescriptor DESC = new RpgSystemDescriptor("Shadowrun 5th Edition", "sr5", "shadowrun-5th");
     
     private static final String NUMBER_PARAM = "number";
@@ -121,6 +124,7 @@ public class Shadowrun5Command extends RpgSystemCommand
             {
                 return HelpWrapper.printHelp(prefixMatcher.group(CMD_NAME), CMD_OPTIONS, true);
             }
+            LOGGER.debug(cmdLine);
             try
             {
                 CommandLineParser parser = new DefaultParser();
