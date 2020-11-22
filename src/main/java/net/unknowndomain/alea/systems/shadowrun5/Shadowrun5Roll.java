@@ -22,9 +22,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import net.unknowndomain.alea.dice.D6;
+import net.unknowndomain.alea.messages.MsgBuilder;
+import net.unknowndomain.alea.messages.ReturnMsg;
 import net.unknowndomain.alea.pools.DicePool;
 import net.unknowndomain.alea.roll.GenericRoll;
-import org.javacord.api.entity.message.MessageBuilder;
 
 /**
  *
@@ -75,7 +76,7 @@ public class Shadowrun5Roll implements GenericRoll
     }
     
     @Override
-    public MessageBuilder getResult()
+    public ReturnMsg getResult()
     {
         List<Integer> resultsPool = this.dicePool.getResults();
         List<Integer> res = new ArrayList<>();
@@ -103,9 +104,9 @@ public class Shadowrun5Roll implements GenericRoll
         return formatResults(results, results2);
     }
     
-    private MessageBuilder formatResults(Shadowrun5Results results, Shadowrun5Results results2)
+    private ReturnMsg formatResults(Shadowrun5Results results, Shadowrun5Results results2)
     {
-        MessageBuilder mb = new MessageBuilder();
+        MsgBuilder mb = new MsgBuilder();
         
         mb.append("Hits: ").append(results.getHits());
         if ((limit != null) && (results.getHits() > limit) && (!mods.contains(Modifiers.PUSH_THE_LIMIT)))
@@ -163,7 +164,7 @@ public class Shadowrun5Roll implements GenericRoll
                 mb.append("}\n");
             }
         }
-        return mb;
+        return mb.build();
     }
     
     private Shadowrun5Results buildIncrements(List<Integer> res)
