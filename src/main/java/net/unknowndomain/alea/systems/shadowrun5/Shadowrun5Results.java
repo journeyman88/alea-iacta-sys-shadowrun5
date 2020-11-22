@@ -20,18 +20,23 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.unknowndomain.alea.messages.MsgBuilder;
+import net.unknowndomain.alea.roll.GenericResult;
 
 /**
  *
  * @author journeyman
  */
-public class Shadowrun5Results
+public class Shadowrun5Results extends GenericResult
 {
     private final List<Integer> results;
     private int hits = 0;
     private int miss = 0;
     private int ones = 0;
     private List<Integer> hitResults = new ArrayList<>();
+    private Integer limit;
+    private Shadowrun5Results prev;
+    private boolean push = false;
     
     public Shadowrun5Results(List<Integer> results)
     {
@@ -107,6 +112,78 @@ public class Shadowrun5Results
     public List<Integer> getHitResults()
     {
         return hitResults;
+    }
+
+    @Override
+    protected void formatResults(MsgBuilder messageBuilder, boolean verbose, int indentValue)
+    {
+        String indent = getIndent(indentValue);
+        messageBuilder.append(indent).append("Hits: ").append(getHits());
+        if ((limit != null) && (getHits() > limit) && (!push))
+        {
+            messageBuilder.append(" => ").append(limit);
+        }
+        messageBuilder.appendNewLine();
+        messageBuilder.append(indent).append("Miss: ").append(getMiss()).append("( ");
+        messageBuilder.append("Ones: ").append(getOnes()).append(" )\n");
+        if (isCriticalGlitch() || isGlitch())
+        {
+            messageBuilder.append(indent);
+        }
+        if (isCriticalGlitch())
+        {
+            messageBuilder.append("Critical ");
+        }
+        if (isGlitch())
+        {
+            messageBuilder.append("Glitch").appendNewLine();
+        }
+        if (verbose)
+        {
+            messageBuilder.append(indent).append("Results: ").append(" [ ");
+            for (Integer t : getResults())
+            {
+                messageBuilder.append(t).append(" ");
+            }
+            messageBuilder.append("]\n");
+            if (prev != null)
+            {
+                messageBuilder.append("Prev : {\n");
+                prev.formatResults(messageBuilder, verbose, indentValue + 4);
+                messageBuilder.append("}\n");
+            }
+        }
+    }
+    
+    
+    public Integer getLimit()
+    {
+        return limit;
+    }
+
+    public void setLimit(Integer limit)
+    {
+        this.limit = limit;
+    }
+
+    public Shadowrun5Results getPrev()
+    {
+        return prev;
+    }
+
+    public void setPrev(Shadowrun5Results prev)
+    {
+        this.prev = prev;
+    }
+
+    public boolean isPush()
+    {
+        return push;
+    }
+
+    public void setPush(boolean push)
+    {
+        this.push = push;
     }
 
 }

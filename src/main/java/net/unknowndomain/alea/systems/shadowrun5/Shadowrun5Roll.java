@@ -21,10 +21,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.unknowndomain.alea.dice.D6;
-import net.unknowndomain.alea.messages.MsgBuilder;
-import net.unknowndomain.alea.messages.ReturnMsg;
+import net.unknowndomain.alea.dice.standard.D6;
 import net.unknowndomain.alea.pools.DicePool;
+import net.unknowndomain.alea.roll.GenericResult;
 import net.unknowndomain.alea.roll.GenericRoll;
 
 /**
@@ -76,7 +75,7 @@ public class Shadowrun5Roll implements GenericRoll
     }
     
     @Override
-    public ReturnMsg getResult()
+    public GenericResult getResult()
     {
         List<Integer> resultsPool = this.dicePool.getResults();
         List<Integer> res = new ArrayList<>();
@@ -101,70 +100,9 @@ public class Shadowrun5Roll implements GenericRoll
             results2 = results;
             results = buildIncrements(res);
         }
-        return formatResults(results, results2);
-    }
-    
-    private ReturnMsg formatResults(Shadowrun5Results results, Shadowrun5Results results2)
-    {
-        MsgBuilder mb = new MsgBuilder();
-        
-        mb.append("Hits: ").append(results.getHits());
-        if ((limit != null) && (results.getHits() > limit) && (!mods.contains(Modifiers.PUSH_THE_LIMIT)))
-        {
-            mb.append(" => ").append(limit);
-        }
-        mb.appendNewLine();
-        mb.append("Miss: ").append(results.getMiss()).append("( ");
-        mb.append("Ones: ").append(results.getOnes()).append(" )\n");
-        if (results.isCriticalGlitch())
-        {
-            mb.append("Critical ");
-        }
-        if (results.isGlitch())
-        {
-            mb.append("Glitch").appendNewLine();
-        }
-        if (mods.contains(Modifiers.VERBOSE))
-        {
-            mb.append("Results: ").append(" [ ");
-            for (Integer t : results.getResults())
-            {
-                mb.append(t).append(" ");
-            }
-            mb.append("]\n");
-            if (results2 != null)
-            {
-                mb.append("Prev : {\n");
-                mb.append("    Hits: ").append(results2.getHits());
-                if ((results2.getHits() > limit) &&  !mods.contains(Modifiers.PUSH_THE_LIMIT))
-                {
-                    mb.append(" => ").append(limit);
-                }
-                mb.appendNewLine();
-                mb.append("    Miss: ").append(results2.getMiss()).append("( ");
-                mb.append("Ones: ").append(results2.getOnes()).append(" )\n");
-                if (results2.isCriticalGlitch())
-                {
-                    mb.append("    Critical ");
-                }
-                if (results2.isGlitch())
-                {
-                    if (!results2.isCriticalGlitch())
-                    {
-                        mb.append("    ");
-                    }
-                    mb.append("Glitch").appendNewLine();
-                }
-                mb.append("    Results: ").append(" [ ");
-                for (Integer t : results2.getResults())
-                {
-                    mb.append(t).append(" ");
-                }
-                mb.append("]\n");
-                mb.append("}\n");
-            }
-        }
-        return mb.build();
+        results.setPush(mods.contains(Modifiers.PUSH_THE_LIMIT));
+        results.setVerbose(mods.contains(Modifiers.VERBOSE));
+        return results;
     }
     
     private Shadowrun5Results buildIncrements(List<Integer> res)
@@ -191,6 +129,7 @@ public class Shadowrun5Roll implements GenericRoll
                 results.addOne();
             }
         }
+        results.setLimit(limit);
         return results;
     }
 }
