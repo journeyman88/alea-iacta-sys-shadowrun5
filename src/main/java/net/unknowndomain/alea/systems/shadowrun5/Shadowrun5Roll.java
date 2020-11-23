@@ -68,25 +68,6 @@ public class Shadowrun5Roll extends Shadowrun5Base
         List<Integer> res = new ArrayList<>();
         res.addAll(resultsPool);
         Shadowrun5Results results = buildIncrements(res);
-        Shadowrun5Results results2 = null;
-        if (mods.contains(Shadowrun5Modifiers.SECOND_CHANCE) && (results.getMiss() > 0) )
-        {
-            DicePool<D6> reroll;
-            if (mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT))
-            {
-                reroll = new DicePool<>(D6.INSTANCE, results.getMiss(), 10);
-            }
-            else
-            {
-                reroll = new DicePool<>(D6.INSTANCE, results.getMiss());
-            }
-            boolean done = false;
-            res = new ArrayList<>();
-            res.addAll(reroll.getResults());
-            res.addAll(results.getHitResults());
-            results2 = results;
-            results = buildIncrements(res);
-        }
         results.setPush(mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT));
         results.setVerbose(mods.contains(Shadowrun5Modifiers.VERBOSE));
         return results;
