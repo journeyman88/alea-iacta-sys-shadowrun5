@@ -47,7 +47,7 @@ public class Shadowrun5Reroll extends Shadowrun5Base implements StatefulRoll
     public GenericResult getResult()
     {
         Shadowrun5Results results = prev;
-        if (mods.contains(Shadowrun5Modifiers.SECOND_CHANCE) && (results.getMiss() > 0) )
+        if (mods.contains(Shadowrun5Modifiers.SECOND_CHANCE) && (results.getMiss() > 0) && (!results.isPush()))
         {
             DicePool<D6> reroll;
             if (mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT))

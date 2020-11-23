@@ -140,6 +140,7 @@ public class Shadowrun5Results extends GenericResult
         }
         if (verbose)
         {
+            messageBuilder.append(indent).append("Roll ID: ").append(getUuid()).appendNewLine();
             messageBuilder.append(indent).append("Results: ").append(" [ ");
             for (Integer t : getResults())
             {
