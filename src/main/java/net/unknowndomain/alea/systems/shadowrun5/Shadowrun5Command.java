@@ -55,7 +55,6 @@ public class Shadowrun5Command extends RpgSystemCommand
                         .longOpt(NUMBER_PARAM)
                         .desc("Number of dice in the pool")
                         .hasArg()
-                        .required()
                         .argName("diceNumber")
                         .build()
         );
@@ -131,30 +130,34 @@ public class Shadowrun5Command extends RpgSystemCommand
                 return Optional.empty();
             }
 
-            Set<Shadowrun5Roll.Modifiers> mods = new HashSet<>();
+            Set<Shadowrun5Modifiers> mods = new HashSet<>();
 
-            if (cmd.hasOption(PUSH_PARAM))
-            {
-                mods.add(Shadowrun5Roll.Modifiers.PUSH_THE_LIMIT);
-            }
-            if (cmd.hasOption(SECOND_PARAM))
-            {
-                mods.add(Shadowrun5Roll.Modifiers.SECOND_CHANCE);
-            }
             if (cmd.hasOption(CMD_VERBOSE))
             {
-                mods.add(Shadowrun5Roll.Modifiers.VERBOSE);
+                mods.add(Shadowrun5Modifiers.VERBOSE);
             }
-            String n = cmd.getOptionValue(NUMBER_PARAM);
-            GenericRoll roll;
-            if (cmd.hasOption(LIMIT_PARAM))
+            if (cmd.hasOption(PUSH_PARAM))
             {
-                String l = cmd.getOptionValue(LIMIT_PARAM);
-                roll = new Shadowrun5Roll(Integer.parseInt(n), Integer.parseInt(l), mods);
+                mods.add(Shadowrun5Modifiers.PUSH_THE_LIMIT);
+            }
+            GenericRoll roll;
+            if (cmd.hasOption(SECOND_PARAM))
+            {
+                mods.add(Shadowrun5Modifiers.SECOND_CHANCE);
+                roll = new Shadowrun5Reroll(mods);
             }
             else
             {
-                roll = new Shadowrun5Roll(Integer.parseInt(n), mods);
+                String n = cmd.getOptionValue(NUMBER_PARAM);
+                if (cmd.hasOption(LIMIT_PARAM))
+                {
+                    String l = cmd.getOptionValue(LIMIT_PARAM);
+                    roll = new Shadowrun5Roll(Integer.parseInt(n), Integer.parseInt(l), mods);
+                }
+                else
+                {
+                    roll = new Shadowrun5Roll(Integer.parseInt(n), mods);
+                }
             }
             retVal = Optional.of(roll);
         } 

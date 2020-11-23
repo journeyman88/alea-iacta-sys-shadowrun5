@@ -18,52 +18,39 @@ package net.unknowndomain.alea.systems.shadowrun5;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import net.unknowndomain.alea.dice.standard.D6;
 import net.unknowndomain.alea.pools.DicePool;
 import net.unknowndomain.alea.roll.GenericResult;
-import net.unknowndomain.alea.roll.GenericRoll;
 
 /**
  *
  * @author journeyman
  */
-public class Shadowrun5Roll implements GenericRoll
+public class Shadowrun5Roll extends Shadowrun5Base
 {
     
-    public enum Modifiers
-    {
-        VERBOSE,
-        PUSH_THE_LIMIT,
-        SECOND_CHANCE
-    }
-    
     private final DicePool<D6> dicePool;
-    private final Integer limit;
-    private final Set<Modifiers> mods;
     
-    public Shadowrun5Roll(Integer dice, Modifiers ... mod)
+    public Shadowrun5Roll(Integer dice, Shadowrun5Modifiers ... mod)
     {
         this(dice, Arrays.asList(mod));
     }
     
-    public Shadowrun5Roll(Integer trait, Integer limit, Modifiers ... mod)
+    public Shadowrun5Roll(Integer trait, Integer limit, Shadowrun5Modifiers ... mod)
     {
         this(trait, limit, Arrays.asList(mod));
     }
     
-    public Shadowrun5Roll(Integer dice, Collection<Modifiers> mod)
+    public Shadowrun5Roll(Integer dice, Collection<Shadowrun5Modifiers> mod)
     {
         this(dice, null, mod);
     }
     
-    public Shadowrun5Roll(Integer dice, Integer limit, Collection<Modifiers> mod)
+    public Shadowrun5Roll(Integer dice, Integer limit, Collection<Shadowrun5Modifiers> mod)
     {
-        this.mods = new HashSet<>();
-        this.mods.addAll(mod);
-        if (mods.contains(Modifiers.PUSH_THE_LIMIT))
+        super(mod);
+        if (mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT))
         {
             this.dicePool = new DicePool<>(D6.INSTANCE, dice, 6);
         }
@@ -82,10 +69,10 @@ public class Shadowrun5Roll implements GenericRoll
         res.addAll(resultsPool);
         Shadowrun5Results results = buildIncrements(res);
         Shadowrun5Results results2 = null;
-        if (mods.contains(Modifiers.SECOND_CHANCE) && (results.getMiss() > 0) )
+        if (mods.contains(Shadowrun5Modifiers.SECOND_CHANCE) && (results.getMiss() > 0) )
         {
             DicePool<D6> reroll;
-            if (mods.contains(Modifiers.PUSH_THE_LIMIT))
+            if (mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT))
             {
                 reroll = new DicePool<>(D6.INSTANCE, results.getMiss(), 10);
             }
@@ -100,36 +87,9 @@ public class Shadowrun5Roll implements GenericRoll
             results2 = results;
             results = buildIncrements(res);
         }
-        results.setPush(mods.contains(Modifiers.PUSH_THE_LIMIT));
-        results.setVerbose(mods.contains(Modifiers.VERBOSE));
+        results.setPush(mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT));
+        results.setVerbose(mods.contains(Shadowrun5Modifiers.VERBOSE));
         return results;
     }
     
-    private Shadowrun5Results buildIncrements(List<Integer> res)
-    {
-        res.sort((Integer o1, Integer o2) ->
-        {
-            return -1 * o1.compareTo(o2);
-        });
-        Shadowrun5Results results = new Shadowrun5Results(res);
-        int max = res.size();
-        for (int i = 0; i < max; i++)
-        {
-            int temp = res.remove(0);
-            if (temp >= 5)
-            {
-                results.addHit(temp);
-            }
-            else if (temp > 1)
-            {
-                results.addMiss();
-            }
-            else
-            {
-                results.addOne();
-            }
-        }
-        results.setLimit(limit);
-        return results;
-    }
 }
