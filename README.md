@@ -1,5 +1,5 @@
 # alea-iacta-sys-shadowrun5
-A RPG system module for Alea Iacta Est implementing 7th Sea - 2nd Edition
+A RPG system module for Alea Iacta Est implementing Shadowrun - 5th Edition
 
 ## Description
 This command will roll a pool of several d6, then according to the 5th edition rule will evaluate Hits, Miss (of which will count the ones), and also will communicate eventual Glitches and Critical Glitches. If a limit is provided it will also limit the success number to that (outside of modifiers).
