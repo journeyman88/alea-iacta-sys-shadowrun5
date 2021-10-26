@@ -19,8 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import net.unknowndomain.alea.dice.standard.D6;
-import net.unknowndomain.alea.pools.DicePool;
+import net.unknowndomain.alea.random.SingleResult;
+import net.unknowndomain.alea.random.dice.DicePool;
+import net.unknowndomain.alea.random.dice.bag.D6;
 import net.unknowndomain.alea.roll.GenericResult;
 
 /**
@@ -64,8 +65,8 @@ public class Shadowrun5Roll extends Shadowrun5Base
     @Override
     public GenericResult getResult()
     {
-        List<Integer> resultsPool = this.dicePool.getResults();
-        List<Integer> res = new ArrayList<>();
+        List<SingleResult<Integer>> resultsPool = this.dicePool.getResults();
+        List<SingleResult<Integer>> res = new ArrayList<>();
         res.addAll(resultsPool);
         Shadowrun5Results results = buildIncrements(res);
         results.setPush(mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT));

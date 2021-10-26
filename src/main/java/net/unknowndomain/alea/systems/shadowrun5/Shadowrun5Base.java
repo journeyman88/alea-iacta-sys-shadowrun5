@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.unknowndomain.alea.random.SingleResult;
+import net.unknowndomain.alea.random.SingleResultComparator;
 import net.unknowndomain.alea.roll.GenericRoll;
 
 /**
@@ -37,21 +39,19 @@ public abstract class Shadowrun5Base implements GenericRoll
         this.mods.addAll(mod);
     }
 
-    protected Shadowrun5Results buildIncrements(List<Integer> res)
+    protected Shadowrun5Results buildIncrements(List<SingleResult<Integer>> res)
     {
-        res.sort((Integer o1, Integer o2) ->
-        {
-            return -1 * o1.compareTo(o2);
-        });
+        SingleResultComparator comp = new SingleResultComparator(true);
+        res.sort(comp);
         Shadowrun5Results results = new Shadowrun5Results(res);
         int max = res.size();
         for (int i = 0; i < max; i++)
         {
-            int temp = res.remove(0);
-            if (temp >= 5)
+            SingleResult<Integer> temp = res.remove(0);
+            if (temp.getValue() >= 5)
             {
                 results.addHit(temp);
-            } else if (temp > 1)
+            } else if (temp.getValue() > 1)
             {
                 results.addMiss();
             } else

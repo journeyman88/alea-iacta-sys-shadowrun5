@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import net.unknowndomain.alea.messages.MsgBuilder;
+import net.unknowndomain.alea.random.SingleResult;
 import net.unknowndomain.alea.roll.GenericResult;
 
 /**
@@ -29,18 +30,18 @@ import net.unknowndomain.alea.roll.GenericResult;
  */
 public class Shadowrun5Results extends GenericResult
 {
-    private final List<Integer> results;
+    private final List<SingleResult<Integer>> results;
     private int hits = 0;
     private int miss = 0;
     private int ones = 0;
-    private List<Integer> hitResults = new ArrayList<>();
+    private List<SingleResult<Integer>> hitResults = new ArrayList<>();
     private Integer limit;
     private Shadowrun5Results prev;
     private boolean push = false;
     
-    public Shadowrun5Results(List<Integer> results)
+    public Shadowrun5Results(List<SingleResult<Integer>> results)
     {
-        List<Integer> tmp = new ArrayList<>(results.size());
+        List<SingleResult<Integer>> tmp = new ArrayList<>(results.size());
         tmp.addAll(results);
         this.results = Collections.unmodifiableList(tmp);
     }
@@ -78,12 +79,12 @@ public class Shadowrun5Results extends GenericResult
         miss += value;
     }
     
-    public void addHit(Integer dice)
+    public void addHit(SingleResult<Integer> dice)
     {
         addHits(1, dice);
     }
     
-    private void addHits(int value, Integer dice)
+    private void addHits(int value, SingleResult<Integer> dice)
     {
         hits += value;
         hitResults.add(dice);
@@ -94,7 +95,7 @@ public class Shadowrun5Results extends GenericResult
         return hits;
     }
 
-    public List<Integer> getResults()
+    public List<SingleResult<Integer>> getResults()
     {
         return results;
     }
@@ -109,7 +110,7 @@ public class Shadowrun5Results extends GenericResult
         return ones;
     }
 
-    public List<Integer> getHitResults()
+    public List<SingleResult<Integer>> accessHitResults()
     {
         return hitResults;
     }
@@ -142,9 +143,10 @@ public class Shadowrun5Results extends GenericResult
         {
             messageBuilder.append(indent).append("Roll ID: ").append(getUuid()).appendNewLine();
             messageBuilder.append(indent).append("Results: ").append(" [ ");
-            for (Integer t : getResults())
+            for (SingleResult<Integer> t : getResults())
             {
-                messageBuilder.append(t).append(" ");
+                messageBuilder.append("( ").append(t.getLabel()).append(" => ");
+                messageBuilder.append(t.getValue()).append(") ");
             }
             messageBuilder.append("]\n");
             if (prev != null)
