@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import net.unknowndomain.alea.random.SingleResult;
 import net.unknowndomain.alea.random.dice.DicePool;
 import net.unknowndomain.alea.random.dice.bag.D6;
@@ -33,24 +34,24 @@ public class Shadowrun5Roll extends Shadowrun5Base
     
     private final DicePool<D6> dicePool;
     
-    public Shadowrun5Roll(Integer dice, Shadowrun5Modifiers ... mod)
+    public Shadowrun5Roll(Locale lang, Integer dice, Shadowrun5Modifiers ... mod)
     {
-        this(dice, Arrays.asList(mod));
+        this(lang, dice, Arrays.asList(mod));
     }
     
-    public Shadowrun5Roll(Integer trait, Integer limit, Shadowrun5Modifiers ... mod)
+    public Shadowrun5Roll(Locale lang, Integer trait, Integer limit, Shadowrun5Modifiers ... mod)
     {
-        this(trait, limit, Arrays.asList(mod));
+        this(lang, trait, limit, Arrays.asList(mod));
     }
     
-    public Shadowrun5Roll(Integer dice, Collection<Shadowrun5Modifiers> mod)
+    public Shadowrun5Roll(Locale lang, Integer dice, Collection<Shadowrun5Modifiers> mod)
     {
-        this(dice, null, mod);
+        this(lang, dice, null, mod);
     }
     
-    public Shadowrun5Roll(Integer dice, Integer limit, Collection<Shadowrun5Modifiers> mod)
+    public Shadowrun5Roll(Locale lang, Integer dice, Integer limit, Collection<Shadowrun5Modifiers> mod)
     {
-        super(mod);
+        super(lang, mod);
         if (mods.contains(Shadowrun5Modifiers.PUSH_THE_LIMIT))
         {
             this.dicePool = new DicePool<>(D6.INSTANCE, dice, 6);

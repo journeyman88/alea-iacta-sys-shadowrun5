@@ -18,6 +18,7 @@ package net.unknowndomain.alea.systems.shadowrun5;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import net.unknowndomain.alea.random.SingleResult;
 import net.unknowndomain.alea.random.SingleResultComparator;
@@ -30,13 +31,15 @@ import net.unknowndomain.alea.roll.GenericRoll;
 public abstract class Shadowrun5Base implements GenericRoll
 {
     
+    private final Locale lang;
     protected final Set<Shadowrun5Modifiers> mods;
     protected Integer limit;
 
-    public Shadowrun5Base(Collection<Shadowrun5Modifiers> mod)
+    public Shadowrun5Base(Locale lang, Collection<Shadowrun5Modifiers> mod)
     {
         this.mods = new HashSet<>();
         this.mods.addAll(mod);
+        this.lang = lang;
     }
 
     protected Shadowrun5Results buildIncrements(List<SingleResult<Integer>> res)
@@ -60,6 +63,7 @@ public abstract class Shadowrun5Base implements GenericRoll
             }
         }
         results.setLimit(limit);
+        results.setLang(lang);
         return results;
     }
     

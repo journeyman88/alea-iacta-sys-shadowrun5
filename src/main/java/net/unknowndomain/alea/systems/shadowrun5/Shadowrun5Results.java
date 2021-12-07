@@ -22,14 +22,16 @@ import java.util.Collections;
 import java.util.List;
 import net.unknowndomain.alea.messages.MsgBuilder;
 import net.unknowndomain.alea.random.SingleResult;
-import net.unknowndomain.alea.roll.GenericResult;
+import net.unknowndomain.alea.roll.LocalizedResult;
 
 /**
  *
  * @author journeyman
  */
-public class Shadowrun5Results extends GenericResult
+public class Shadowrun5Results extends LocalizedResult
 {
+    private final static String BUNDLE_NAME = "net.unknowndomain.alea.systems.shadowrun5.RpgSystemBundle";
+    
     private final List<SingleResult<Integer>> results;
     private int hits = 0;
     private int miss = 0;
@@ -119,30 +121,30 @@ public class Shadowrun5Results extends GenericResult
     protected void formatResults(MsgBuilder messageBuilder, boolean verbose, int indentValue)
     {
         String indent = getIndent(indentValue);
-        messageBuilder.append(indent).append("Hits: ").append(getHits());
+        messageBuilder.append(indent).append(translate("shadowrun5.results.hits", getHits()));
         if ((limit != null) && (getHits() > limit) && (!push))
         {
             messageBuilder.append(" => ").append(limit);
         }
         messageBuilder.appendNewLine();
-        messageBuilder.append(indent).append("Miss: ").append(getMiss()).append("( ");
-        messageBuilder.append("Ones: ").append(getOnes()).append(" )\n");
+        messageBuilder.append(indent).append(translate("shadowrun5.results.misses", getMiss())).append("( ");
+        messageBuilder.append(translate("shadowrun5.results.ones", getOnes())).append(" )").appendNewLine();
         if (isCriticalGlitch() || isGlitch())
         {
             messageBuilder.append(indent);
         }
         if (isCriticalGlitch())
         {
-            messageBuilder.append("Critical ");
+            messageBuilder.append(translate("shadowrun5.results.criticalGlitch")).appendNewLine();
         }
-        if (isGlitch())
+        else if (isGlitch())
         {
-            messageBuilder.append("Glitch").appendNewLine();
+            messageBuilder.append(translate("shadowrun5.results.glitch")).appendNewLine();
         }
         if (verbose)
         {
             messageBuilder.append(indent).append("Roll ID: ").append(getUuid()).appendNewLine();
-            messageBuilder.append(indent).append("Results: ").append(" [ ");
+            messageBuilder.append(indent).append(translate("shadowrun5.results.diceResults")).append(" [ ");
             for (SingleResult<Integer> t : getResults())
             {
                 messageBuilder.append("( ").append(t.getLabel()).append(" => ");
@@ -151,7 +153,7 @@ public class Shadowrun5Results extends GenericResult
             messageBuilder.append("]\n");
             if (prev != null)
             {
-                messageBuilder.append("Prev : {\n");
+                messageBuilder.append(translate("shadowrun5.results.prevResults")).append("{\n");
                 prev.formatResults(messageBuilder, verbose, indentValue + 4);
                 messageBuilder.append("}\n");
             }
@@ -187,6 +189,12 @@ public class Shadowrun5Results extends GenericResult
     public void setPush(boolean push)
     {
         this.push = push;
+    }
+
+    @Override
+    protected String getBundleName()
+    {
+        return BUNDLE_NAME;
     }
 
 }

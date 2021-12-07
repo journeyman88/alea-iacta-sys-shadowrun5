@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import net.unknowndomain.alea.random.SingleResult;
 import net.unknowndomain.alea.random.dice.DicePool;
 import net.unknowndomain.alea.random.dice.bag.D6;
@@ -34,14 +35,14 @@ public class Shadowrun5Reroll extends Shadowrun5Base implements StatefulRoll
     
     private Shadowrun5Results prev;
     
-    public Shadowrun5Reroll(Shadowrun5Modifiers ... mod)
+    public Shadowrun5Reroll(Locale lang, Shadowrun5Modifiers ... mod)
     {
-        this(Arrays.asList(mod));
+        this(lang, Arrays.asList(mod));
     }
     
-    public Shadowrun5Reroll(Collection<Shadowrun5Modifiers> mod)
+    public Shadowrun5Reroll(Locale lang, Collection<Shadowrun5Modifiers> mod)
     {
-        super(mod);
+        super(lang, mod);
     }
     
     @Override

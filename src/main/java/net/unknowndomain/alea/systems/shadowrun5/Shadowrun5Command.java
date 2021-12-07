@@ -64,17 +64,17 @@ public class Shadowrun5Command extends RpgSystemCommand
             GenericRoll roll; 
             if (opt.isSecondChance())
             {
-                roll = new Shadowrun5Reroll(opt.getModifiers());
+                roll = new Shadowrun5Reroll(lang, opt.getModifiers());
             }
             else
             {
                 if (opt.getLimit() != null)
                 {
-                    roll = new Shadowrun5Roll(opt.getNumberOfDice(), opt.getModifiers());
+                    roll = new Shadowrun5Roll(lang, opt.getNumberOfDice(), opt.getModifiers());
                 }
                 else
                 {
-                    roll = new Shadowrun5Roll(opt.getNumberOfDice(), opt.getLimit(), opt.getModifiers());
+                    roll = new Shadowrun5Roll(lang, opt.getNumberOfDice(), opt.getLimit(), opt.getModifiers());
                 }
             }
             retVal = Optional.of(roll);
