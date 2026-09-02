@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-module net.unknowndomain.alea.systems.shadowrun5 {
+module net.unknowndomain.alea.systems.shadowrun5edition {
     requires net.unknowndomain.alea.core;
     requires org.slf4j;
     requires static lombok;
