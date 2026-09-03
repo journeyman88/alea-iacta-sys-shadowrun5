@@ -23,23 +23,25 @@ import java.util.List;
 import net.unknowndomain.alea.messages.MsgBuilder;
 import net.unknowndomain.alea.random.SingleResult;
 import net.unknowndomain.alea.roll.LocalizedResult;
+import net.unknowndomain.alea.systems.annotations.RpgSystemResult;
 
 /**
  *
  * @author journeyman
  */
+@RpgSystemResult(typeId = "shadowrun5")
 public class Shadowrun5Results extends LocalizedResult
 {
     private final static String BUNDLE_NAME = "net.unknowndomain.alea.systems.shadowrun5.RpgSystemBundle";
-    
-    private final List<SingleResult<Integer>> results;
-    private int hits = 0;
-    private int miss = 0;
-    private int ones = 0;
-    private List<SingleResult<Integer>> hitResults = new ArrayList<>();
-    private Integer limit;
-    private Shadowrun5Results prev;
-    private boolean push = false;
+
+    final List<SingleResult<Integer>> results;
+    int hits = 0;
+    int miss = 0;
+    int ones = 0;
+    List<SingleResult<Integer>> hitResults = new ArrayList<>();
+    Integer limit;
+    Shadowrun5Results prev;
+    boolean push = false;
     
     public Shadowrun5Results(List<SingleResult<Integer>> results)
     {
@@ -147,8 +149,8 @@ public class Shadowrun5Results extends LocalizedResult
             messageBuilder.append(indent).append(translate("shadowrun5.results.diceResults")).append(" [ ");
             for (SingleResult<Integer> t : getResults())
             {
-                messageBuilder.append("( ").append(t.getLabel()).append(" => ");
-                messageBuilder.append(t.getValue()).append(") ");
+                messageBuilder.append("( ").append(t.label()).append(" => ");
+                messageBuilder.append(t.value()).append(") ");
             }
             messageBuilder.append("]\n");
             if (prev != null)
@@ -195,6 +197,11 @@ public class Shadowrun5Results extends LocalizedResult
     protected String getBundleName()
     {
         return BUNDLE_NAME;
+    }
+
+    void restoreUuid(String uuid)
+    {
+        setUuid(uuid);
     }
 
 }

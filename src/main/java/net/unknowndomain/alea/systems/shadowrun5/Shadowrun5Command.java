@@ -23,6 +23,7 @@ import net.unknowndomain.alea.roll.GenericRoll;
 import net.unknowndomain.alea.systems.RpgSystemCommand;
 import net.unknowndomain.alea.systems.RpgSystemDescriptor;
 import net.unknowndomain.alea.systems.RpgSystemOptions;
+import net.unknowndomain.alea.systems.option.RpgSystemParser;
 
 /**
  *
@@ -77,5 +78,12 @@ public class Shadowrun5Command extends RpgSystemCommand
     {
         return new Shadowrun5Options();
     }
+
+    @Override
+    protected RpgSystemParser systemParser()
+    {
+        return new Shadowrun5OptionsParser();
+    }
+
     
 }

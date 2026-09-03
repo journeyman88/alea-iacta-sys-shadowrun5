@@ -20,4 +20,5 @@ module net.unknowndomain.alea.systems.shadowrun5edition {
     requires static lombok;
     opens net.unknowndomain.alea.systems.shadowrun5 to net.unknowndomain.alea.core;
     provides net.unknowndomain.alea.systems.RpgSystemCommand with net.unknowndomain.alea.systems.shadowrun5.Shadowrun5Command;
+    provides net.unknowndomain.alea.systems.results.ResultCodec with net.unknowndomain.alea.systems.shadowrun5.Shadowrun5ResultsCodec;
 }

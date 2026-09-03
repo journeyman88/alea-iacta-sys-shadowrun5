@@ -21,13 +21,13 @@ import net.unknowndomain.alea.systems.annotations.RpgSystemOption;
 public class Shadowrun5Options extends RpgSystemOptions
 {
     @RpgSystemOption(name = "number", shortcode = "n", description = "shadowrun5.options.number", argName = "diceNumber")
-    private Integer numberOfDice;
+    Integer numberOfDice;
     @RpgSystemOption(name = "limit", shortcode = "l", description = "shadowrun5.options.limit", argName = "hitLimit")
-    private Integer limit;
+    Integer limit;
     @RpgSystemOption(name = "push", shortcode = "p", description = "shadowrun5.options.push")
-    private boolean pushTheLimit;
+    boolean pushTheLimit;
     @RpgSystemOption(name = "second", shortcode = "s", description = "shadowrun5.options.second")
-    private boolean secondChance;
+    boolean secondChance;
     
     
     @Override

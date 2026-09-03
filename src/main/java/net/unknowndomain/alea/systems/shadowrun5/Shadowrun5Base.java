@@ -51,10 +51,10 @@ public abstract class Shadowrun5Base implements GenericRoll
         for (int i = 0; i < max; i++)
         {
             SingleResult<Integer> temp = res.remove(0);
-            if (temp.getValue() >= 5)
+            if (temp.value() >= 5)
             {
                 results.addHit(temp);
-            } else if (temp.getValue() > 1)
+            } else if (temp.value() > 1)
             {
                 results.addMiss();
             } else
